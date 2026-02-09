@@ -119,6 +119,27 @@ export const useSheetStore = create((set) => ({
           : t
       ),
     })),
+    
+  reorderSubTopics: (topicId, subTopics) =>
+  set((s) => ({
+    topics: s.topics.map((t) =>
+      t.id === topicId ? { ...t, subTopics } : t
+    ),
+  })),
+
+reorderQuestions: (topicId, subId, questions) =>
+  set((s) => ({
+    topics: s.topics.map((t) =>
+      t.id === topicId
+        ? {
+            ...t,
+            subTopics: t.subTopics.map((s2) =>
+              s2.id === subId ? { ...s2, questions } : s2
+            ),
+          }
+        : t
+    ),
+  })),
 
   deleteQuestion: (topicId, subTopicId, questionId) =>
     set((state) => ({

@@ -23,12 +23,45 @@ export default function TopicList() {
   }
 
   const onDragEnd = (result) => {
-    if (!result.destination) return
-    const items = Array.from(topics)
-    const [moved] = items.splice(result.source.index, 1)
-    items.splice(result.destination.index, 0, moved)
-    reorderTopics(items)
+    const { source, destination, draggableId } = result
+    if (!destination) return
+
+    // TOPICS
+    if (source.droppableId === "topics") {
+      const items = Array.from(topics)
+      const [moved] = items.splice(source.index, 1)
+      items.splice(destination.index, 0, moved)
+      reorderTopics(items)
+      return
+    }
+
+    // SUB-TOPICS
+    if (source.droppableId.startsWith("subtopics-")) {
+      const topicId = source.droppableId.replace("subtopics-", "")
+      const topic = topics.find((t) => t.id === topicId)
+        if (!topic) return
+
+        const items = Array.from(topic.subTopics)
+        const [moved] = items.splice(source.index, 1)
+        items.splice(destination.index, 0, moved)
+        useSheetStore.getState().reorderSubTopics(topicId, items)
+        return
+    }
+
+  // QUESTIONS
+  if (source.droppableId.startsWith("questions-")) {
+    const [, topicId, subId] = source.droppableId.split("-")
+    const topic = topics.find((t) => t.id === topicId)
+    const sub = topic?.subTopics.find((s) => s.id === subId)
+    if (!sub) return
+
+    const items = Array.from(sub.questions)
+    const [moved] = items.splice(source.index, 1)
+    items.splice(destination.index, 0, moved)
+    useSheetStore.getState().reorderQuestions(topicId, subId, items)
   }
+}
+
 
   return (
     <div>
