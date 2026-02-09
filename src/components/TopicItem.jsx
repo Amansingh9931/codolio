@@ -23,14 +23,16 @@ export default function TopicItem({ topic }) {
   }, [editSub, editQ])
 
   return (
-    <div className="p-5">
+    <div className="p-6 space-y-6">
       {/* ADD SUB-TOPIC */}
       <div
         className="
-          bg-[#020617] border border-[#1e293b]
-          rounded-lg p-4 mb-6
+          rounded-2xl p-4
+          bg-gradient-to-br from-[#020617] to-[#020617]/80
+          border border-white/5
+          backdrop-blur
           hover:border-blue-500/40
-          hover:shadow-lg hover:shadow-blue-500/10
+          hover:shadow-xl hover:shadow-blue-500/10
           transition-all
         "
       >
@@ -39,17 +41,21 @@ export default function TopicItem({ topic }) {
             value={subInput}
             onChange={(e) => setSubInput(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && subInput.trim()) {
+              if (e.key === "Enter" && subInput.trim()) {
                 addSubTopic(topic.id, subInput)
                 setSubInput("")
               }
             }}
             placeholder="Add sub-topic"
             className="
-              flex-1 px-3 py-2
-              bg-[#020617] border border-[#1e293b]
-              rounded
-              focus:outline-none focus:ring-2 focus:ring-blue-500
+              flex-1 px-4 py-2
+              rounded-xl
+              bg-black/30
+              border border-white/10
+              text-sm
+              focus:outline-none
+              focus:ring-2 focus:ring-blue-500/50
+              placeholder:text-gray-400
             "
           />
           <button
@@ -60,8 +66,10 @@ export default function TopicItem({ topic }) {
             }}
             disabled={!subInput.trim()}
             className="
-              bg-blue-500 text-black px-4 rounded
-              hover:bg-blue-600
+              px-5 rounded-xl
+              bg-gradient-to-r from-blue-500 to-blue-600
+              text-black text-sm font-medium
+              hover:brightness-110
               disabled:opacity-40
               transition-all
             "
@@ -74,7 +82,7 @@ export default function TopicItem({ topic }) {
       {/* SUB-TOPICS */}
       <Droppable droppableId={`subtopics-${topic.id}`} type="SUBTOPIC">
         {(p) => (
-          <div ref={p.innerRef} {...p.droppableProps}>
+          <div ref={p.innerRef} {...p.droppableProps} className="space-y-6">
             {topic.subTopics.map((sub, subIndex) => (
               <Draggable key={sub.id} draggableId={sub.id} index={subIndex}>
                 {(p) => (
@@ -83,17 +91,19 @@ export default function TopicItem({ topic }) {
                     {...p.draggableProps}
                     {...p.dragHandleProps}
                     className="
-                      bg-[#020617] border border-[#1e293b]
-                      rounded-lg p-4 mb-6
+                      rounded-2xl p-5
+                      bg-gradient-to-br from-[#020617] to-[#020617]/70
+                      border border-white/5
+                      backdrop-blur
                       cursor-grab active:cursor-grabbing
-                      hover:border-purple-500/50
-                      hover:shadow-xl hover:shadow-purple-500/10
-                      hover:-translate-y-[1px]
+                      hover:border-purple-500/40
+                      hover:shadow-2xl hover:shadow-purple-500/10
+                      hover:-translate-y-[2px]
                       transition-all
                     "
                   >
                     {/* SUB-TOPIC HEADER */}
-                    <div className="flex justify-between mb-3">
+                    <div className="flex justify-between items-center mb-4">
                       {editSub === sub.id ? (
                         <input
                           ref={editRef}
@@ -109,18 +119,18 @@ export default function TopicItem({ topic }) {
                             if (e.key === "Escape") setEditSub(null)
                           }}
                           className="
-                            bg-[#020617] border border-[#1e293b]
-                            px-2 py-1 rounded
-                            focus:ring-2 focus:ring-purple-500
+                            px-3 py-1 rounded-lg
+                            bg-black/30 border border-white/10
+                            focus:ring-2 focus:ring-purple-500/50
                           "
                         />
                       ) : (
-                        <h3 className="font-medium text-white">
+                        <h3 className="font-semibold tracking-wide">
                           {sub.title}
                         </h3>
                       )}
 
-                      <div className="flex gap-3 text-sm">
+                      <div className="flex gap-4 text-xs">
                         <button
                           onClick={() => {
                             setEditSub(sub.id)
@@ -140,7 +150,7 @@ export default function TopicItem({ topic }) {
                     </div>
 
                     {/* ADD QUESTION */}
-                    <div className="flex gap-2 mb-3">
+                    <div className="flex gap-3 mb-4">
                       <input
                         value={inputs[`q-${sub.id}`] || ""}
                         onChange={(e) =>
@@ -163,10 +173,12 @@ export default function TopicItem({ topic }) {
                         }}
                         placeholder="Add question"
                         className="
-                          flex-1 px-2 py-1
-                          bg-[#020617] border border-[#1e293b]
-                          rounded text-sm
-                          focus:ring-2 focus:ring-green-500
+                          flex-1 px-3 py-2
+                          rounded-xl
+                          bg-black/30
+                          border border-white/10
+                          text-sm
+                          focus:ring-2 focus:ring-emerald-500/50
                         "
                       />
                       <button
@@ -179,8 +191,11 @@ export default function TopicItem({ topic }) {
                           })
                         }}
                         className="
-                          bg-green-500 text-black px-3 rounded
-                          hover:bg-green-600 transition
+                          px-4 rounded-xl
+                          bg-gradient-to-r from-emerald-500 to-emerald-600
+                          text-black text-sm font-medium
+                          hover:brightness-110
+                          transition-all
                         "
                       >
                         Add
@@ -193,7 +208,7 @@ export default function TopicItem({ topic }) {
                       type="QUESTION"
                     >
                       {(p) => (
-                        <div ref={p.innerRef} {...p.droppableProps}>
+                        <div ref={p.innerRef} {...p.droppableProps} className="space-y-3">
                           {sub.questions.map((q, qIndex) => (
                             <Draggable
                               key={q.id}
@@ -206,20 +221,21 @@ export default function TopicItem({ topic }) {
                                   {...p.draggableProps}
                                   {...p.dragHandleProps}
                                   className="
-                                    bg-[#020617] border border-[#1e293b]
-                                    rounded-md px-3 py-2 mb-2
+                                    rounded-xl px-4 py-3
+                                    bg-black/30
+                                    border border-white/10
                                     cursor-grab active:cursor-grabbing
-                                    hover:border-emerald-500/50
-                                    hover:shadow-md hover:shadow-emerald-500/10
+                                    hover:border-emerald-500/40
+                                    hover:shadow-lg hover:shadow-emerald-500/10
                                     hover:-translate-y-[1px]
                                     transition-all
                                   "
                                 >
                                   <div className="flex justify-between items-center">
-                                    <span className="text-gray-300">
+                                    <span className="text-sm text-gray-200">
                                       {q.text}
                                     </span>
-                                    <div className="flex gap-3 text-xs">
+                                    <div className="flex gap-4 text-xs">
                                       <button
                                         onClick={() => {
                                           setEditQ(q.id)
