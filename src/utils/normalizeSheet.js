@@ -25,7 +25,6 @@ export function normalizeSheet(apiData) {
       title: q.title,
       difficulty: q.questionId.difficulty,
       platform: q.questionId.platform,
-      link: q.questionId.problemUrl,
       solved: q.isSolved,
     })
   })

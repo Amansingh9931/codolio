@@ -19,11 +19,16 @@ body {
 /* Hover lift */
 .hover-lift:hover {
   transform: translateY(-2px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
 
-/* Collapse animation */
-.collapse {
-  overflow: hidden;
-  transition: max-height 0.35s ease, opacity 0.25s ease;
+/* Drag lift effect */
+[data-rbd-dragging="true"] {
+  transform: scale(1.04) rotate(0.3deg) !important;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.8) !important;
+  z-index: 9999;
+}
+
+/* Smooth sibling animation */
+[data-rbd-droppable-context-id] > * {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }

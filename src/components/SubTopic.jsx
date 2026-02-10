@@ -10,28 +10,22 @@ export default function SubTopic({ sub, path }) {
 
   return (
     <Draggable draggableId={sub.id} index={path.at(-1)}>
-      {(prov) => (
+      {(p) => (
         <motion.div
-          ref={prov.innerRef}
-          {...prov.draggableProps}
+          ref={p.innerRef}
+          {...p.draggableProps}
           layout
-          className="glass p-4"
+          className="glass p-4 shadow-md shadow-black/30 hover:shadow-lg hover:shadow-orange-500/10"
         >
           <div
-            {...prov.dragHandleProps}
+            {...p.dragHandleProps}
             onClick={() => setOpen(!open)}
-            className="flex items-center gap-2 cursor-pointer"
+            className="cursor-pointer flex items-center gap-2"
           >
-            <motion.span
-              animate={{ rotate: open ? 90 : 0 }}
-              className="text-gray-400"
-            >
-              ▶
-            </motion.span>
-            <h3 className="text-sm font-semibold">{sub.name}</h3>
-            <span className="ml-auto text-xs text-gray-500">
-              {sub.questions.length} questions
+            <span className="w-4 text-gray-400">
+              {open ? "▼" : "▶"}
             </span>
+            <span className="font-medium">{sub.name}</span>
           </div>
 
           <AnimatePresence>
@@ -40,23 +34,21 @@ export default function SubTopic({ sub, path }) {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3 }}
                 className="mt-4"
               >
                 <button
                   onClick={() => addItem(path, "Question")}
-                  className="mb-3 px-3 py-1.5 bg-orange-500 hover:bg-orange-600
-                             text-xs rounded"
+                  className="mb-3 px-3 py-1 bg-orange-500 rounded text-sm hover:bg-orange-600"
                 >
-                  ➕ Add Question
+                  + Question
                 </button>
 
                 <Droppable droppableId={sub.id} type="QUESTION">
-                  {(prov) => (
+                  {(p) => (
                     <div
-                      ref={prov.innerRef}
-                      {...prov.droppableProps}
-                      className="space-y-2"
+                      ref={p.innerRef}
+                      {...p.droppableProps}
+                      className="space-y-2 pl-4 border-l border-white/10"
                     >
                       {sub.questions.map((q, i) => (
                         <QuestionRow
@@ -65,7 +57,7 @@ export default function SubTopic({ sub, path }) {
                           path={[...path, "questions", i]}
                         />
                       ))}
-                      {prov.placeholder}
+                      {p.placeholder}
                     </div>
                   )}
                 </Droppable>
