@@ -1,28 +1,24 @@
 import { Draggable } from "@hello-pangea/dnd"
+import { motion } from "framer-motion"
 
-
-export default function QuestionRow({ q }) {
+export default function QuestionRow({ q, path }) {
   return (
-    <Draggable draggableId={q.id} index={0}>
+    <Draggable draggableId={q.id} index={path.at(-1)}>
       {(prov) => (
-        <div
+        <motion.div
           ref={prov.innerRef}
           {...prov.draggableProps}
           {...prov.dragHandleProps}
-          className="flex justify-between items-center px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg"
+          layout
+          whileHover={{ scale: 1.02, y: -2 }}
+          className="px-4 py-3 rounded-lg bg-black/30
+                     border border-white/10 hover:border-orange-500/40"
         >
-          <div>
-            <p className="text-sm font-medium">{q.title}</p>
-            <span className="text-xs text-gray-500">
-              {q.platform} · {q.difficulty}
-            </span>
-          </div>
-
-          <div className="flex gap-3 text-gray-400 text-sm">
-            <button>✏</button>
-            <button className="text-red-500">🗑</button>
-          </div>
-        </div>
+          <p className="text-sm font-medium">{q.title}</p>
+          <span className="text-xs text-gray-500">
+            {q.platform} · {q.difficulty}
+          </span>
+        </motion.div>
       )}
     </Draggable>
   )

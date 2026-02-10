@@ -3,6 +3,27 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gray-100 text-gray-900;
+  background: #0b0f14;
+  color: #f3f4f6;
   font-family: Inter, system-ui, sans-serif;
+}
+
+/* Glass card */
+.glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+}
+
+/* Hover lift */
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+/* Collapse animation */
+.collapse {
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.25s ease;
 }
