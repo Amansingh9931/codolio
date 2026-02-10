@@ -109,15 +109,20 @@ export default function TopicList() {
 
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="topics">
-          {(p) => (
-            <div ref={p.innerRef} {...p.droppableProps}>
+          {(provided) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
               {topics.map((topic, i) => (
                 <Draggable key={topic.id} draggableId={topic.id} index={i}>
-                  {(p) => (
-                    <div ref={p.innerRef} {...p.draggableProps} className="mb-8">
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      style={provided.draggableProps.style} // <-- fixes z-index
+                      className="mb-8"
+                    >
                       {/* ENTIRE CARD IS DRAG HANDLE */}
                       <div
-                        {...p.dragHandleProps}
+                        {...provided.dragHandleProps}
                         className="
                           bg-gradient-to-br from-[#1e293b] to-[#0f172a]
                           border border-transparent
@@ -184,13 +189,14 @@ export default function TopicList() {
                           </div>
                         </div>
 
+                        {/* Subtopics + Questions */}
                         <TopicItem topic={topic} />
                       </div>
                     </div>
                   )}
                 </Draggable>
               ))}
-              {p.placeholder}
+              {provided.placeholder}
             </div>
           )}
         </Droppable>
