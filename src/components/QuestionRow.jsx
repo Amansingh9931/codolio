@@ -1,7 +1,4 @@
 import { Draggable } from "@hello-pangea/dnd"
-import { useState } from "react"
-import ConfirmModal from "./ConfirmModal"
-import { useSheetStore } from "../store/useSheetStore"
 
 
 export default function QuestionRow({ q }) {
